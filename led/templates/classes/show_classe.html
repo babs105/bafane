@@ -1,0 +1,47 @@
+{% extends 'layouts/default.html' %}
+{% block title %}show-{{super()}}{% endblock title%}
+ {% block nav %}
+      <nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
+        <div class="container ">
+          <a class="navbar-brand mr-4" href="/">Lycée d'Exellence de Dakar</a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarToggle">
+            <div class="navbar-nav mr-auto">
+              {% if current_user.is_authenticated %}
+              <a class="nav-item nav-link" href="{{url_for('home')}}">Accueil</a>
+              <a class="nav-item nav-link" href="{{url_for('index_classe')}}">Liste Classe</a>
+              <a class="nav-item nav-link" href="{{url_for('new_classe')}}">Ajout Classe</a>
+
+          </div>
+              
+              <div class="navbar-nav"> 
+             
+               <a class="nav-item nav-link" href="{{url_for('account')}}">Mon Compte</a> 
+              
+                <a class="nav-item nav-link" href="{{ url_for('logout') }}">Déconnexion</a>
+              
+           {% endif %}  
+      </nav>
+ {% endblock %}
+{% block body %}
+
+ <article class="media content-section">
+
+          <div class="media-body">
+            <div class="article">
+                <legend class="border-bottom mb-2">Info Classe</legend>
+              <h2 class="article-title"> Classe: {{ classe.nom_classe }}</h2>
+            
+              <small class="text-muted">Créée le: {{ classe.date_creation.strftime('%d/%m/%Y') }}</small>
+             
+            </div>
+            
+            <p class="article-title">Année Scolaire: {{ classe.annee_scolaire }}</p>
+            <p> <a class="mr-2" href="#">Par:{{ classe.supervisorClasse.username }}</a></p>
+            <p> <a class="btn btn-info" href="{{url_for('eleve_classe',nomClasse=classe.nom_classe)}}">Liste des élèves de la Classe</a></p>
+          </div>
+    </article>
+  
+ {% endblock %}

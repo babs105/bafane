@@ -1,0 +1,107 @@
+{% extends 'layouts/default.html' %}
+{% block title %}{{title}}{{super()}}{% endblock %}
+ {% block nav %}
+      <nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
+        <div class="container">
+          <a class="navbar-brand mr-4" href="/">Lycée d'Exellence de Dakar</a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarToggle">
+            <div class="navbar-nav mr-auto">
+              {% if current_user.is_authenticated %}
+              <a class="nav-item nav-link" href="{{url_for('home')}}">Accueil</a>
+              <a class="nav-item nav-link" href="{{url_for('index_eleve')}}">Liste Eleve</a>
+              <a class="nav-item nav-link" href="{{url_for('new_eleve')}}">Inscrire Eleve</a>
+
+          </div>
+              
+              <div class="navbar-nav"> 
+             
+               <a class="nav-item nav-link" href="{{url_for('account')}}">Mon Compte</a> 
+              
+                <a class="nav-item nav-link" href="{{ url_for('logout') }}">Déconnexion</a>
+              
+           {% endif %}  
+      </nav>
+ {% endblock %}
+{% block body %}
+  <div class="content-section">
+    <form method="POST" action="">
+        {{ form.hidden_tag() }}
+        <fieldset class="form-group">
+            <legend class="border-bottom mb-4">{{legend}}</legend>
+            <div class="form-group">
+                    {{ form.prenom.label(class="form-control-label") }}
+                    {{ form.prenom(class="form-control form-control-md") }}
+                           {% if errorprenom %}
+                                <span style="color: red">{{ errorprenom }}</span>
+                            {% endif %}
+                
+                </div>
+                 <div class="form-group">
+                   
+                    {{ form.nom.label(class="form-control-label") }}
+                    {{ form.nom(class="form-control form-control-md") }}
+                           {% if errornom %}
+                                <span style="color: red">{{ errornom }}</span>
+                            {% endif %}
+                
+                </div>
+                
+                   <div class="form-group">
+                   
+                    {{ form.email.label(class="form-control-label") }}
+                    {{ form.email(class="form-control form-control-md") }}
+                           {% if erroremail %}
+                                <span style="color: red">{{ erroremail }}</span>
+                            {% endif %}
+                
+                </div>
+                  <div class="form-group">
+                   
+                    {{ form.dateNaissance.label(class="form-control-label") }}
+                    {{ form.dateNaissance(class="form-control form-control-md") }}
+                           {% if errordate %}
+                                <span style="color: red">{{ errordate }}</span>
+                            {% endif %}
+                
+                </div>
+                 <div class="form-group">
+                   
+                    {{ form.tel.label(class="form-control-label") }}
+                    {{ form.tel(class="form-control form-control-md") }}
+                           {% if errortel %}
+                                <span style="color: red">{{ errortel }}</span>
+                            {% endif %}
+                
+                </div>
+               <div class="form-group">
+                   
+                    {{ form.adresse.label(class="form-control-label") }}
+                    {{ form.adresse(class="form-control form-control-md") }}
+                           {% if erroradresse %}
+                                <span style="color: red">{{ erroradresse}}</span>
+                            {% endif %}
+                
+                </div>
+                
+                    <div class=" form-group" >
+                        {{ form.classeInscrit.label(class="form-control-label") }}
+                            {{ form.classeInscrit(class=" form-control-md")}}
+                            
+                    </div>
+                    <div class=" form-group" >
+                        {{ form.annee_scolaire.label(class="form-control-label mr-3") }}
+                            {{ form.annee_scolaire(class=" form-control-md ")}}
+                      
+                    </div>
+                
+        </fieldset>
+        <div class="form-group">
+            {{ form.submit(class="btn btn-outline-info md") }}
+        </div>
+    </form>
+</div>
+ 
+{% endblock %}

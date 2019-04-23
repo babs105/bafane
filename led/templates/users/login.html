@@ -1,0 +1,74 @@
+{% extends 'layouts/default.html' %}
+{% block title %}Login-{{super()}}{% endblock %}
+ {% block nav %}
+
+      <nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
+        <div class="container ">
+          <a class="navbar-brand mr-4" href="/">Lycée d'Exellence de Dakar</a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarToggle">
+            <div class="navbar-nav mr-auto">
+              <a class="nav-item nav-link" href="#">LED</a>
+              
+            </div>
+            <!-- Navbar Right Side -->
+        
+        </div>
+      </nav>
+ {% endblock %}
+{% block body %}
+
+
+   <div class="content-section">
+        <form method="POST" action="">
+            {{ form.hidden_tag() }}
+            <fieldset class="form-group">
+                <legend class="border-bottom mb-4">Authentification</legend>
+                <div class="form-group">
+                    {{ form.email.label(class="form-control-label") }}
+                    {% if form.email.errors %}
+                        {{ form.email(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.email.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.email(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    {{ form.password.label(class="form-control-label") }}
+                    {% if form.password.errors %}
+                        {{ form.password(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.password.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.password(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+                <div class="form-check">
+                    {{ form.remember(class="form-check-input") }}
+                    {{ form.remember.label(class="form-check-label") }}
+                </div>
+            </fieldset>
+             <div class="form-group">
+                {{ form.submit(class="btn btn-outline-info") }}
+                <small class="text-muted ml-2">
+                    <a href="{{ url_for('forget_pwd') }}">Mot de Passe oublé?</a>
+                </small>
+            </div>
+            <small class="text-muted">
+           Créer Compte? <a class="ml-2" href="{{ url_for('register') }}">Créer maintenant</a>
+        </small>
+        </form>
+    </div>
+    <div class="border-top pt-3">
+        
+    </div>
+{% endblock %}

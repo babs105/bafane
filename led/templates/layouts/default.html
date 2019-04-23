@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+    <head>
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <link rel="stylesheet" href = "{{ url_for('static', filename = 'css/bootstrap.min.css') }}" />
+      <link rel="stylesheet" href = "{{ url_for('static', filename = 'css/main.css') }}" />
+           <title> {% block title %} LED {% endblock %}</title>
+   </head>
+   <body >
+        
+      
+      <header class="site-header">
+        {% block nav %}
+              {% include 'layouts/partials/_nav.html' %}
+          {% endblock %}
+        
+      </header>
+
+     <main role="main" class="container">
+      <div class="row">
+        <div class="col-md-2">
+           <!-- {% include 'layouts/partials/_sidebar.html' %} -->
+        </div>
+        <div class="col-md-8">
+          {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+              {% for category, message in messages %}
+                
+                   <div class="alert alert-{{ category }} alert-dismissible"> 
+                          <button type="button" class="close" data-dismiss="alert">&times;</button>
+                  {{ message }}
+                </div>
+              {% endfor %}
+            {% endif %}
+          {% endwith %}
+          {% block body %}
+
+          {% endblock %}
+        </div>
+        <div class="col-md-2">
+           <!-- {% include 'layouts/partials/_sidebar.html' %} -->
+        </div>
+      </div>
+    </main>
+           {% include 'layouts/partials/_footer.html' %}    
+
+
+
+      <script  src = "{{ url_for('static', filename = 'js/jquery.min.js') }}" ></script> 
+      <script  src = "{{ url_for('static', filename = 'js/popper.min.js') }}" ></script> 
+      <script  src = "{{ url_for('static', filename = 'js/bootstrap.min.js') }}" ></script> 
+   </body>
+</html>

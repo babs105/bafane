@@ -1,0 +1,68 @@
+{% extends 'layouts/default.html' %}
+{% block title %}Elèves de la classe-{{super()}}{% endblock title%}
+    {% block nav %}
+      <nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
+        <div class="container ">
+          <a class="navbar-brand mr-4" href="/">Lycée d'Exellence de Dakar</a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarToggle">
+             <div class="navbar-nav mr-auto">
+              {% if current_user.is_authenticated %}
+              <a class="nav-item nav-link" href="{{url_for('home')}}">Accueil</a>
+              <a class="nav-item nav-link" href="{{url_for('index_eleve')}}">Liste Eleve</a>
+              <a class="nav-item nav-link" href="{{url_for('new_eleve')}}">Inscrire Eleve</a>
+
+          </div>
+              
+              <div class="navbar-nav"> 
+             
+               <a class="nav-item nav-link" href="{{url_for('account')}}">Mon Compte</a> 
+              
+                <a class="nav-item nav-link" href="{{ url_for('logout') }}">Déconnexion</a>
+              
+           {% endif %}  
+      </nav>
+ {% endblock %}
+  {% block body %}
+    <h1 class="text-center">{{ classe.nom_classe }} ({{ eleves.total }} Elèves inscrits)</h1>
+  
+    <div class="content-section">
+	    <legend class="border-bottom mb-2 mt-3 text-center">Liste des élèves de la Classe</legend>
+	 <table class="table table-bordered">
+	    <thead>
+	      <tr>
+        <th>Prenom</th>
+        <th>Nom</th>
+        <th>Date Naissance</th>
+        <th>Telephone</th>
+        <th>Adresse</th>
+         
+      </tr>
+    </thead>
+    <tbody>
+     {%for eleve in eleves.items %}
+      <tr id="ligne">
+        <td>{{eleve.prenom}}</td>
+        <td>{{eleve.nom}}</td>
+        <td>{{eleve.date_naissance}}</td>
+        <td>{{eleve.num_telephone}}</td>
+        <td>{{eleve.adresse}}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+      {% for page_num in eleves.iter_pages(left_edge=1,right_edge=1,left_current=1,right_current=2) %} 
+          {% if page_num %}
+           {% if eleves.page == page_num %}
+           <a class="btn btn-info mb-4"href="{{url_for('eleve_classe',page=page_num,nomClasse=classe.nom_classe)}}">{{page_num}}</a>
+           {% else %}
+           <a class="btn btn-outline-info mb-4"href="{{url_for('eleve_classe',page=page_num,nomClasse=classe.nom_classe)}}">{{page_num}}</a>
+           {% endif %}
+      {% else %}
+         ...
+      {% endif %}
+    {% endfor %}
+  {% endblock %}

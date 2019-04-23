@@ -1,0 +1,101 @@
+{% extends 'layouts/default.html' %}
+{% block title %}liste Classe{{super()}}{% endblock %}
+ {% block nav %}
+      <nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
+        <div class="container ">
+          <a class="navbar-brand mr-4" href="/">Lycée d'Exellence de Dakar</a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarToggle">
+             <div class="navbar-nav mr-auto">
+              {% if current_user.is_authenticated %}
+              <a class="nav-item nav-link" href="{{url_for('home')}}">Accueil</a>
+              <a class="nav-item nav-link" href="{{url_for('index_eleve')}}">Liste Eleve</a>
+              <a class="nav-item nav-link" href="{{url_for('new_eleve')}}">Inscrire Eleve</a>
+
+          </div>
+              
+              <div class="navbar-nav"> 
+             
+               <a class="nav-item nav-link" href="{{url_for('account')}}">Mon Compte</a> 
+              
+                <a class="nav-item nav-link" href="{{ url_for('logout') }}">Déconnexion</a>
+              
+           {% endif %}  
+      </nav>
+ {% endblock %}
+ {% block body %}
+ <div class="content-section">
+   <form class="form-inline" action="{{url_for('search_eleve')}}" method="POST"> 
+      {{ form.hidden_tag() }}
+               <div class="form-inline mr-2" style="width: 300px;">
+                    {{ form.prenomeleve.label(class="form-control-label") }}
+                    {% if form.prenomeleve.errors %}
+                        {{ form.prenomeleve(class="form-control form-control-sm is-invalid") }}
+                        <div class="invalid-feedback" style="width: 200px;">
+                            {% for error in form.prenomeleve.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.prenomeleve(class="form-control form-control-sm") }}
+                    {% endif %}
+                </div>
+             <div class="form-inline">
+                {{ form.submit(class="btn btn-info btn-sm") }}
+            </div>
+   </form>
+           <legend class="border-bottom mb-2 mt-3 text-center">Liste des Eleves Inscrits Trouvés</legend>
+ <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>Prenom</th>
+        <th>Nom</th>
+        <th>Classe</th>
+        <th>Modifier</th>
+        <th>Supprimer</th>
+         
+      </tr>
+    </thead>
+    <tbody>
+      {% if eleves %}
+     {%for eleve in eleves %}
+      <tr id="ligne">
+        <td><a href="{{url_for('show_eleve',eleve_id=eleve.id)}}">{{eleve.prenom}}</a></td>
+        <td>{{eleve.nom}}</td>
+        <td><a href="{{url_for('eleve_classe',nomClasse=eleve.classeDesEleves.nom_classe)}}">{{eleve.classeDesEleves.nom_classe}}</a></td>
+        <td><a class="btn btn-info btn-sm mt-1 mb-1" href="{{url_for('update_eleve',eleve_id=eleve.id)}}">Modifier</a></td>
+         <td><button type="button" class="btn btn-danger btn-sm m-1" data-toggle="modal" data-target="#deleteModal{{eleve.id}}">Supprimer</button>
+         </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  </div>
+      {%for eleve in eleves %}
+    <!-- Modal -->
+              <div class="modal fade" id="deleteModal{{eleve.id}}" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="deleteModalLabel">Vous allez supprimer l'Eleve!</h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                  <div class="modal-body"> <h5 ><span style="color:red">{{eleve.prenom}} {{eleve.nom}} {{eleve.classeDesEleves.nom_classe}}</span></h5></div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-dismiss="modal">fermer</button>
+                      <form action="{{ url_for('del_eleve', eleve_id=eleve.id)}}" method="POST">
+                        <input class="btn btn-danger" type="submit" value="supprimer">
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
+       {% endfor %}
+        {% else %}
+      <h1>results de la recherche: Not found</h1>
+      {% endif %}
+ {% endblock %}

@@ -1,0 +1,114 @@
+{% extends 'layouts/default.html' %}
+{% block title %}{{title}}{{super()}}{% endblock %}
+ {% block nav %}
+      <nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
+        <div class="container ">
+          <a class="navbar-brand mr-4" href="/">Lycée d'Exellence de Dakar</a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarToggle">
+            <div class="navbar-nav mr-auto">
+              {% if current_user.is_authenticated %}
+              <a class="nav-item nav-link" href="{{url_for('home')}}">Accueil</a>
+              <a class="nav-item nav-link" href="{{url_for('index_classe')}}">Liste Classe</a>
+              <a class="nav-item nav-link" href="{{url_for('new_classe')}}">Ajout Classe</a>
+
+          </div>
+              
+              <div class="navbar-nav"> 
+             
+               <a class="nav-item nav-link" href="{{url_for('account')}}">Mon Compte</a> 
+              
+                <a class="nav-item nav-link" href="{{ url_for('logout') }}">Déconnexion</a>
+              
+           {% endif %}  
+      </nav>
+ {% endblock %}
+{% block body %}
+  <div class="content-section">
+    <form method="POST" action="">
+        {{ form.hidden_tag() }}
+        <fieldset class="form-group">
+            <legend class="border-bottom mb-4">{{legend}}</legend>
+             <div class="form-group">
+                    {{ form.niveau_classe.label(class="form-control-label") }}
+                    {% if form.niveau_classe.errors %}
+                        {{ form.niveau_classe(class="form-control form-control-md is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.niveau_classe.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.niveau_classe(class="form-control form-control-md") }}
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    {{ form.serie_classe.label(class="form-control-label") }}
+                    {% if form.serie_classe.errors %}
+                        {{ form.serie_classe(class="form-control form-control-md is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.serie_classe.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.serie_classe(class="form-control form-control-md") }}
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    {{ form.classement.label(class="form-control-label") }}
+                    {% if form.classement.errors %}
+                        {{ form.classement(class="form-control form-control-md is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.classement.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.classement(class="form-control form-control-md") }}
+                    {% endif %}
+                </div>
+                 <div class="form-group">
+                    {{ form.annee_scolaire.label(class="form-control-label") }}
+                    {% if form.annee_scolaire.errors %}
+                        {{ form.annee_scolaire(class="form-control form-control-md is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.annee_scolaire.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.annee_scolaire(class="form-control form-control-md") }}
+                    {% endif %}
+                </div>
+               
+             
+            
+        </fieldset>
+        <div class="form-group">
+            {{ form.submit(class="btn btn-outline-info") }}
+        </div>
+    </form>
+</div>
+ <script>
+        var niveauclasse_select = document.getElementById("niveau_classe");
+        var serieclasse_select = document.getElementById("serie_classe");
+        niveauclasse_select.onchange = function()  {
+             
+            niveauclasse = niveauclasse_select.value;
+            
+            fetch('/serie/' + niveauclasse).then(function(response) {
+                response.json().then(function(data) {
+                    var optionHTML = '';
+                    for (var serie of data.series) {
+                        optionHTML += '<option value="' + serie + '">' + serie + '</option>';
+                    }
+                    serieclasse_select.innerHTML = optionHTML;
+                })
+                
+            });
+        }
+    </script>
+{% endblock %}

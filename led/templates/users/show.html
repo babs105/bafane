@@ -1,0 +1,11 @@
+{% extends 'layouts/default.html' %}
+{% block title %}{{post.title}}{% endblock %}
+{% block body %}
+    <h1> Blog</h1>
+    <article>
+       	<h2>#{{post.id}} - {{post.title}}</h2>
+       		<p>{{post.content}}</p>
+    </article>
+
+    <p><a href="{{ url_for('posts_index') }}"> Voir tous les posts</a></p>
+{% endblock %}

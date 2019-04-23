@@ -1,0 +1,52 @@
+{% extends 'layouts/default.html' %}
+{% block title %}show-{{super()}}{% endblock title%}
+ {% block nav %}
+      <nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
+        <div class="container ">
+          <a class="navbar-brand mr-4" href="/">Lycée d'Exellence de Dakar</a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarToggle">
+             <div class="navbar-nav mr-auto">
+              {% if current_user.is_authenticated %}
+              <a class="nav-item nav-link" href="{{url_for('home')}}">Accueil</a>
+              <a class="nav-item nav-link" href="{{url_for('index_eleve')}}">Liste Eleve</a>
+              <a class="nav-item nav-link" href="{{url_for('new_eleve')}}">Inscrire Eleve</a>
+
+          </div>
+              
+              <div class="navbar-nav"> 
+             
+               <a class="nav-item nav-link" href="{{url_for('account')}}">Mon Compte</a> 
+              
+                <a class="nav-item nav-link" href="{{ url_for('logout') }}">Déconnexion</a>
+              
+           {% endif %}  
+      </nav>
+ {% endblock %}
+{% block body %}
+
+ <article class="media content-section">
+
+          <div class="media-body">
+            <div class="article">
+                <legend class="border-bottom mb-2">Info Elève</legend>
+             <p class="article-title"> Prenom: {{ eleve.prenom }}</p>
+              <p class="article-title">Nom: {{ eleve.nom }}</p>
+              <p class="article-title">Email: {{ eleve.email }}</p>
+              <p class="article-title">Date Naissance: {{ eleve.date_naissance }}</p>
+              <p class="article-title">Téléphone: {{ eleve.num_telephone }}</p>
+              <p class="article-title">Adresse: {{ eleve.adresse }}</p>
+               <p class="article-title">Classe: {{ eleve.classeDesEleves.nom_classe }}</p>
+
+              <small class="text-muted">Inscrit le: {{ eleve.date_inscription.strftime('%d/%m/%Y') }}</small>
+             
+            </div>
+            
+                        <p> <a class="mr-2" href="#">Par:{{ eleve.supervisorEleve.username }}</a></p>
+            <p> <a class="btn btn-info" href="{{url_for('eleve_classe',nomClasse=eleve.classeDesEleves.nom_classe)}}">Liste des élèves de la Classe</a></p>
+          </div>
+    </article>
+  
+ {% endblock %}
